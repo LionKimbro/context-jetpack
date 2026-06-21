@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "context-jetpack"
+version = "0.1.0"
+description = "Compose persistent, registry-resolved context messages for Codex."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "CC0-1.0" }
+dependencies = [
+  "lionscliapp",
+  "machine-root",
+]
+
+[project.scripts]
+context-jetpack = "contextjetpack.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
