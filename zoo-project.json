@@ -1,0 +1,13 @@
+{
+  "zookeep-project-guid": "20ed42b0-c8b1-492d-b76f-c4b17a21d0a8",
+  "name": "context-jetpack",
+  "repo-type": "python-2026-03",
+  "license": "CC0-1.0",
+  "repository": {
+    "name": "context-jetpack",
+    "visibility": "public"
+  },
+  "python-package": {
+    "name": "contextjetpack"
+  }
+}
