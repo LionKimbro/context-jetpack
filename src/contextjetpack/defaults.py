@@ -103,6 +103,22 @@ DOCUMENTS = [
         "designation": "required",
         "reason": "Read this so that you know how to use the M1 runtime.",
     },
+    {
+        "key": "reducer-core-architecture",
+        "label": "Reducer-Core Architecture",
+        "document-id": "",
+        "selected": False,
+        "designation": "required",
+        "reason": "The program will use the Reducer-Core Architecture. Read this to understand the architecture and its specific terms of use.",
+    },
+    {
+        "key": "cira",
+        "label": "CIRA Agentic Implementation Brief",
+        "document-id": "cira.agentic-implementation-brief.v1",
+        "selected": False,
+        "designation": "required",
+        "reason": "The program is likely to use, or may be required to use, the Coordinated Interactive Runtime Architecture (CIRA). Read this so that you know how to implement it.",
+    },
 ]
 
 

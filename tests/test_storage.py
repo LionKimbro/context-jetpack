@@ -16,6 +16,10 @@ def test_new_data_uses_document_specific_defaults(tmp_path):
     assert data["documents"]["json-document-writing"]["designation"] == "recommended"
     assert data["documents"]["softspec"]["selected"] is True
     assert data["documents"]["m1-core"]["designation"] == "required"
+    assert data["documents"]["reducer-core-architecture"]["selected"] is False
+    assert data["documents"]["reducer-core-architecture"]["designation"] == "required"
+    assert data["documents"]["cira"]["selected"] is False
+    assert data["documents"]["cira"]["designation"] == "required"
 
 
 def test_data_round_trip(tmp_path):
