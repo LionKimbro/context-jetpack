@@ -108,14 +108,15 @@ def add_document_row(parent, row, definition, state):
     if not available:
         checkbox.configure(state="disabled")
 
-    combo = ttk.Combobox(
+    designation_button = ttk.Button(
         parent,
         textvariable=designation,
-        values=("required", "recommended"),
-        state="readonly",
+        command=lambda: toggle_designation(designation),
         width=13,
     )
-    combo.grid(row=row, column=1, sticky="n", padx=4, pady=8)
+    designation_button.grid(row=row, column=1, sticky="n", padx=4, pady=8)
+    if not available:
+        designation_button.configure(state="disabled")
 
     details = ttk.Frame(parent)
     details.grid(row=row, column=2, sticky="ew", padx=4, pady=8)
@@ -131,6 +132,13 @@ def add_document_row(parent, row, definition, state):
         "designation": designation,
         "reason": reason,
     }
+
+
+def toggle_designation(variable):
+    if variable.get() == "required":
+        variable.set("recommended")
+    else:
+        variable.set("required")
 
 
 def collect_form(state):

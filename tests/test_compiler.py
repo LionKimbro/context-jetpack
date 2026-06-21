@@ -4,6 +4,8 @@ from contextjetpack.defaults import new_data
 
 def test_compile_message_includes_id_path_reason_and_options():
     data = new_data()
+    for document in data["documents"].values():
+        document["selected"] = False
     data["purpose"] = "Build a tiny useful thing."
     item = data["documents"]["softspec"]
     item["selected"] = True
@@ -28,13 +30,10 @@ def test_compile_message_includes_id_path_reason_and_options():
     assert "please ask" in message
 
 
-def test_compile_message_rejects_unresolved_selected_document():
+def test_compile_message_ignores_unresolved_placeholder():
     data = new_data()
-    data["documents"]["project-directory-system"]["selected"] = True
+    for key, document in data["documents"].items():
+        document["selected"] = key == "project-directory-system"
+    message = compile_message(data, {})
 
-    try:
-        compile_message(data, {})
-    except ValueError as exc:
-        assert "no Librarian document ID" in str(exc)
-    else:
-        raise AssertionError("expected ValueError")
+    assert "project directory system" not in message

@@ -14,9 +14,7 @@ def compile_message(data, registry_entries):
             continue
         document_id = definition["document-id"]
         if not document_id:
-            raise ValueError(
-                f"{definition['label']} has no Librarian document ID yet"
-            )
+            continue
         resolved = resolve_document(registry_entries, document_id)
         resolved["reason"] = state["reason"].strip()
         selected[state["designation"]].append(resolved)
