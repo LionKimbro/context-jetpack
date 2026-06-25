@@ -1,4 +1,23 @@
+from contextjetpack.defaults import DOCUMENTS, GROUPS
 from contextjetpack.storage import load_data, save_data
+
+
+def test_documents_are_grouped_in_display_order():
+    groups = [item["group"] for item in DOCUMENTS]
+    assert GROUPS == [
+        "GENERAL",
+        "WRITING",
+        "APPLICATION FRAMEWORK",
+        "TKINTER APPS",
+        "M1",
+        "ARCHITECTURE",
+    ]
+    assert groups == sorted(groups, key=GROUPS.index)
+    assert [item["key"] for item in DOCUMENTS[:3]] == [
+        "general-background",
+        "project-directory-system",
+        "programming-guidelines",
+    ]
 
 
 def test_new_data_uses_document_specific_defaults(tmp_path):
@@ -11,6 +30,10 @@ def test_new_data_uses_document_specific_defaults(tmp_path):
     assert data["documents"]["project-directory-system"]["selected"] is True
     assert data["documents"]["tkinter-conventions"]["selected"] is False
     assert data["documents"]["tkinter-conventions"]["designation"] == "required"
+    assert data["documents"]["tkintertester-reference"]["selected"] is False
+    assert data["documents"]["tkintertester-reference"]["designation"] == "required"
+    assert data["documents"]["tkintertester-lionscliapp"]["selected"] is False
+    assert data["documents"]["tkintertester-lionscliapp"]["designation"] == "required"
     assert data["documents"]["programming-guidelines"]["selected"] is True
     assert data["documents"]["lionscliapp"]["selected"] is False
     assert data["documents"]["json-document-writing"]["designation"] == "recommended"

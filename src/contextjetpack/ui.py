@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from .compiler import compile_message
-from .defaults import DOCUMENTS
+from .defaults import DOCUMENTS, GROUPS
 from .registry import load_registry, resolve_registry_path
 from .storage import load_data, save_data
 
@@ -44,14 +44,9 @@ def build_window(window, root, state):
 
     document_frame = ttk.Frame(canvas)
     window_id = canvas.create_window((0, 0), window=document_frame, anchor="nw")
-    document_frame.columnconfigure(2, weight=1)
+    document_frame.columnconfigure(0, weight=1)
 
-    ttk.Label(document_frame, text="Use").grid(row=0, column=0, sticky="w", padx=4)
-    ttk.Label(document_frame, text="Reading").grid(row=0, column=1, sticky="w", padx=4)
-    ttk.Label(document_frame, text="Document and reason").grid(row=0, column=2, sticky="w", padx=4)
-
-    for row, definition in enumerate(DOCUMENTS, start=1):
-        add_document_row(document_frame, row, definition, state)
+    add_document_groups(document_frame, state)
 
     document_frame.bind(
         "<Configure>",
@@ -93,6 +88,31 @@ def build_window(window, root, state):
         root.destroy()
 
     window.protocol("WM_DELETE_WINDOW", close_window)
+
+
+def add_document_groups(parent, state):
+    grouped = group_documents()
+    row = 0
+    for group in GROUPS:
+        definitions = grouped[group]
+        frame = ttk.LabelFrame(parent, text=group, padding=8)
+        frame.grid(row=row, column=0, sticky="ew", pady=(0, 10))
+        frame.columnconfigure(2, weight=1)
+
+        ttk.Label(frame, text="Use").grid(row=0, column=0, sticky="w", padx=4)
+        ttk.Label(frame, text="Reading").grid(row=0, column=1, sticky="w", padx=4)
+        ttk.Label(frame, text="Document and reason").grid(row=0, column=2, sticky="w", padx=4)
+
+        for item_row, definition in enumerate(definitions, start=1):
+            add_document_row(frame, item_row, definition, state)
+        row += 1
+
+
+def group_documents():
+    grouped = {group: [] for group in GROUPS}
+    for definition in DOCUMENTS:
+        grouped[definition["group"]].append(definition)
+    return grouped
 
 
 def add_document_row(parent, row, definition, state):
