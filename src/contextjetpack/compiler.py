@@ -24,18 +24,25 @@ def compile_message(data, registry_entries):
         "",
         purpose,
         "",
-        "Before beginning, consult the following reference documents. "
-        "Each coordinate includes both its Librarian registry ID and its resolved full path.",
+        "Below are reference documents, grouped by when to read them. "
+        "Each entry includes both its Librarian registry ID and its resolved full path.",
     ]
 
-    for designation, heading in (
-        ("required", "Required reading"),
-        ("recommended", "Recommended reading"),
+    for designation, heading, blurb in (
+        ("required", "Read now (before you begin)", None),
+        (
+            "recommended",
+            "Read when relevant (do not read these yet)",
+            "Note that these exist and what each one covers, but do not read them now. "
+            "Open a document only when you are about to do work that requires its knowledge.",
+        ),
     ):
         documents = selected[designation]
         if not documents:
             continue
         lines.extend(["", f"{heading}:"])
+        if blurb:
+            lines.append(blurb)
         for document in documents:
             lines.extend(
                 [

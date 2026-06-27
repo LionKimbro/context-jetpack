@@ -23,7 +23,7 @@ def test_compile_message_includes_id_path_reason_and_options():
     message = compile_message(data, registry)
 
     assert "Build a tiny useful thing." in message
-    assert "Required reading:" in message
+    assert "Read now (before you begin):" in message
     assert "Registry ID: softspec.spec.v2" in message
     assert "C:\\docs\\softspec.txt" in message or "C:/docs/softspec.txt" in message
     assert "Please acknowledge" in message

@@ -12,9 +12,16 @@ def load_data(path):
     if not path.exists():
         return data
 
-    incoming = json.loads(path.read_text(encoding="utf-8"))
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(f"Could not read saved data {path}: {exc}") from None
+    try:
+        incoming = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Saved data is not valid JSON ({path}): {exc}") from None
     if not isinstance(incoming, dict):
-        raise ValueError("data.json must contain a JSON object")
+        raise ValueError(f"Saved data must contain a JSON object: {path}")
 
     data["purpose"] = str(incoming.get("purpose", ""))
     incoming_options = incoming.get("options", {})
