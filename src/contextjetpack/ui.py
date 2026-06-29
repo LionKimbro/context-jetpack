@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
+from .chat_pack import cleanup_chat_folders, open_folder, stage_read_now_files
 from .compiler import compile_message
 from .defaults import DOCUMENTS, GROUPS
 from .registry import load_registry, resolve_document, resolve_registry_path
@@ -100,8 +101,13 @@ def build_window(window, root, state):
 
     ttk.Button(
         controls,
-        text="Compile Message to Codex",
-        command=lambda: compile_to_clipboard(window, state),
+        text="Compile Message for Chat",
+        command=lambda: compile_for_chat(window, state),
+    ).pack(side="right")
+    ttk.Button(
+        controls,
+        text="Compile Message for Agentic AI",
+        command=lambda: compile_for_agentic_ai(window, state),
     ).pack(side="right")
 
     status = tk.StringVar(value=registry_status(state["registry-path"]))
@@ -114,6 +120,7 @@ def build_window(window, root, state):
 
     def close_window():
         save_current_form(state)
+        cleanup_chat_folders(state["data-path"].parent)
         root.destroy()
 
     window.protocol("WM_DELETE_WINDOW", close_window)
@@ -306,18 +313,9 @@ def save_current_form(state):
     save_data(state["data-path"], collect_form(state))
 
 
-def compile_to_clipboard(window, state):
+def compile_for_agentic_ai(window, state):
     try:
-        data = collect_form(state)
-        registry_path = resolve_registry_path(state["registry-path"])
-        entries = load_registry(registry_path)
-        message = compile_message(data, entries)
-        save_data(state["data-path"], data)
-        state["registry-entries"] = entries
-        window.clipboard_clear()
-        window.clipboard_append(message)
-        window.update()
-        refresh_totals(state)
+        registry_path = compile_to_clipboard(window, state)
     except Exception as exc:
         detail = str(exc) or exc.__class__.__name__
         messagebox.showerror(
@@ -329,6 +327,53 @@ def compile_to_clipboard(window, state):
     state["status-var"].set(
         f"Message copied to clipboard. Registry: {registry_path}"
     )
+
+
+def compile_for_chat(window, state):
+    try:
+        registry_path, folder, copied = compile_chat_bundle(window, state)
+    except Exception as exc:
+        detail = str(exc) or exc.__class__.__name__
+        messagebox.showerror(
+            "Context Jetpack", f"Could not compile chat message:\n\n{detail}", parent=window
+        )
+        state["status-var"].set(f"Could not compile chat message: {detail}")
+        return
+
+    count = len(copied)
+    state["status-var"].set(
+        f"Message copied; {count} read-now file(s) staged in {folder}. Registry: {registry_path}"
+    )
+
+
+def compile_to_clipboard(window, state):
+    data = collect_form(state)
+    registry_path = resolve_registry_path(state["registry-path"])
+    entries = load_registry(registry_path)
+    message = compile_message(data, entries)
+    save_data(state["data-path"], data)
+    state["registry-entries"] = entries
+    window.clipboard_clear()
+    window.clipboard_append(message)
+    window.update()
+    refresh_totals(state)
+    return registry_path
+
+
+def compile_chat_bundle(window, state):
+    data = collect_form(state)
+    registry_path = resolve_registry_path(state["registry-path"])
+    entries = load_registry(registry_path)
+    message = compile_message(data, entries)
+    folder, copied = stage_read_now_files(data, entries, state["data-path"].parent)
+    save_data(state["data-path"], data)
+    state["registry-entries"] = entries
+    window.clipboard_clear()
+    window.clipboard_append(message)
+    window.update()
+    refresh_totals(state)
+    open_folder(folder)
+    return registry_path, folder, copied
 
 
 def registry_status(configured_path):
