@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
-from .chat_pack import cleanup_chat_folders, open_folder, stage_read_now_files
+from .chat_pack import cleanup_chat_folders, open_folder, open_path, stage_read_now_files
 from .compiler import compile_message
 from .defaults import DOCUMENTS, GROUPS
 from .registry import load_registry, resolve_document, resolve_registry_path
@@ -201,6 +201,7 @@ def add_document_row(parent, row, definition, state):
     details = ttk.Frame(parent)
     details.grid(row=row, column=2, sticky="ew", padx=4, pady=8)
     details.columnconfigure(0, weight=1)
+    details.columnconfigure(1, weight=0)
 
     if status_kind == "no-id":
         id_text, id_color = "unresolved: no Librarian document ID", "#666666"
@@ -209,14 +210,84 @@ def add_document_row(parent, row, definition, state):
     else:
         id_text, id_color = definition["document-id"], "#666666"
     ttk.Label(details, text=definition["label"]).grid(row=0, column=0, sticky="w")
+    add_document_action_buttons(details, definition, state, status_kind)
     ttk.Label(details, text=id_text, foreground=id_color).grid(row=1, column=0, sticky="w")
-    ttk.Entry(details, textvariable=reason).grid(row=2, column=0, sticky="ew", pady=(3, 0))
+    ttk.Entry(details, textvariable=reason).grid(
+        row=2, column=0, columnspan=2, sticky="ew", pady=(3, 0)
+    )
 
     state["document-widgets"][definition["key"]] = {
         "selected": selected,
         "designation": designation,
         "reason": reason,
     }
+
+
+def add_document_action_buttons(parent, definition, state, status_kind):
+    actions = ttk.Frame(parent)
+    actions.grid(row=0, column=1, sticky="e", padx=(12, 0))
+
+    enabled = status_kind == "ok"
+    button_state = "normal" if enabled else "disabled"
+
+    ttk.Button(
+        actions,
+        text="Open Document",
+        command=lambda: open_document_action(definition, state),
+        state=button_state,
+    ).pack(side="left", padx=(0, 4))
+    ttk.Button(
+        actions,
+        text="Containing Folder",
+        command=lambda: open_containing_folder_action(definition, state),
+        state=button_state,
+    ).pack(side="left", padx=(0, 4))
+    ttk.Button(
+        actions,
+        text="Copy Path",
+        command=lambda: copy_path_action(parent, definition, state),
+        state=button_state,
+    ).pack(side="left")
+
+
+def resolve_document_path_for_action(definition, state):
+    entries = state.get("registry-entries")
+    if not entries:
+        raise ValueError("Registry is not loaded.")
+    resolved = resolve_document(entries, definition["document-id"])
+    return resolved["path"]
+
+
+def open_document_action(definition, state):
+    try:
+        open_path(resolve_document_path_for_action(definition, state))
+    except Exception as exc:
+        set_action_error(state, exc)
+
+
+def open_containing_folder_action(definition, state):
+    try:
+        open_folder(resolve_document_path_for_action(definition, state).parent)
+    except Exception as exc:
+        set_action_error(state, exc)
+
+
+def copy_path_action(widget, definition, state):
+    try:
+        path = resolve_document_path_for_action(definition, state)
+        widget.clipboard_clear()
+        widget.clipboard_append(str(path))
+        widget.update()
+        state["status-var"].set(f"Copied path: {path}")
+    except Exception as exc:
+        set_action_error(state, exc)
+
+
+def set_action_error(state, exc):
+    detail = str(exc) or exc.__class__.__name__
+    var = state.get("status-var")
+    if var is not None:
+        var.set(f"Document action failed: {detail}")
 
 
 DESIGNATION_LABELS = {"required": "Read now", "recommended": "When relevant"}

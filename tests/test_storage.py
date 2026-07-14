@@ -13,8 +13,9 @@ def test_documents_are_grouped_in_display_order():
         "ARCHITECTURE",
     ]
     assert groups == sorted(groups, key=GROUPS.index)
-    assert [item["key"] for item in DOCUMENTS[:3]] == [
+    assert [item["key"] for item in DOCUMENTS[:4]] == [
         "general-background",
+        "general-background-abbreviated",
         "project-directory-system",
         "programming-guidelines",
     ]
@@ -37,7 +38,8 @@ def test_new_data_uses_document_specific_defaults(tmp_path):
     assert data["documents"]["programming-guidelines"]["selected"] is True
     assert data["documents"]["lionscliapp"]["selected"] is False
     assert data["documents"]["json-document-writing"]["designation"] == "recommended"
-    assert data["documents"]["softspec"]["selected"] is True
+    assert data["documents"]["softspec"]["selected"] is False
+    assert data["documents"]["softspec-v3"]["selected"] is True
     assert data["documents"]["m1-core"]["designation"] == "required"
     assert data["documents"]["reducer-core-architecture"]["selected"] is False
     assert data["documents"]["reducer-core-architecture"]["designation"] == "required"

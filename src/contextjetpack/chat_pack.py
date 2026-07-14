@@ -75,7 +75,7 @@ def unique_attachment_name(document_id, source, used_names):
     return candidate
 
 
-def open_folder(path):
+def open_path(path):
     path = Path(path)
     if sys.platform.startswith("win"):
         os.startfile(path)  # noqa: S606 - opening a user-visible folder is intended.
@@ -83,3 +83,7 @@ def open_folder(path):
         subprocess.Popen(["open", str(path)])
     else:
         subprocess.Popen(["xdg-open", str(path)])
+
+
+def open_folder(path):
+    open_path(path)
