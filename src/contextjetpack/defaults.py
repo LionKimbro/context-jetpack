@@ -1,5 +1,7 @@
 GROUPS = [
     "GENERAL",
+    "PROGRAMMING GUIDELINES",
+    "DEVELOPMENT",
     "WRITING",
     "APPLICATION FRAMEWORK",
     "TKINTER APPS",
@@ -37,7 +39,7 @@ DOCUMENTS = [
         "reason": "Read this for a brief overview of how Lion's projects and repositories are organized.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "programming-guidelines",
         "label": "Programming guidelines",
         "document-id": "lionsphilosophyofprogramming.2025.simplified",
@@ -46,7 +48,7 @@ DOCUMENTS = [
         "reason": "These are the programming guidelines that you shall implement the program with.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "style-card-globals",
         "label": "Style Card: Globals",
         "document-id": "lionsphilosophyofprogramming.style-cards-2026.globals.v1",
@@ -55,7 +57,7 @@ DOCUMENTS = [
         "reason": "Program with this philosophy of Globals.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "style-card-function-names",
         "label": "Style Card: Function Names",
         "document-id": "lionsphilosophyofprogramming.style-cards-2026.function-names.v1",
@@ -64,7 +66,7 @@ DOCUMENTS = [
         "reason": "When creating functions, name them like this.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "style-card-function-args",
         "label": "Style Card: Function Arguments",
         "document-id": "lionsphilosophyofprogramming.style-cards-2026.function-arguments.v1",
@@ -73,7 +75,7 @@ DOCUMENTS = [
         "reason": "When creating functions, create their parameter lists like this.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "style-card-machines",
         "label": "Style Card: Machines",
         "document-id": "lionsphilosophyofprogramming.style-cards-2026.machines.v1",
@@ -82,7 +84,7 @@ DOCUMENTS = [
         "reason": "Program like you are making little Machines, not abstractions.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "style-card-registers",
         "label": "Style Card: Registers",
         "document-id": "lionsphilosophyofprogramming.style-cards-2026.registers.v1",
@@ -91,13 +93,22 @@ DOCUMENTS = [
         "reason": "Here is how to use registers in the machines you write.",
     },
     {
-        "group": "GENERAL",
+        "group": "PROGRAMMING GUIDELINES",
         "key": "style-card-python",
         "label": "Style Card: Python",
         "document-id": "lionsphilosophyofprogramming.style-cards-2026.python.v1",
         "selected": False,
         "designation": "required",
         "reason": "These are the broad things to hold in mind when writing Python programs for Lion.",
+    },
+    {
+        "group": "DEVELOPMENT",
+        "key": "bad-method",
+        "label": "Bounded Agentic Development Method (B.A.D.)",
+        "document-id": "bounded-agentic-development.method.v1",
+        "selected": False,
+        "designation": "required",
+        "reason": "The development process we will use to meet our goal.",
     },
     {
         "group": "WRITING",
@@ -212,6 +223,15 @@ DOCUMENTS = [
         "key": "m1-core",
         "label": "M1 Lattice core specification",
         "document-id": "m1lattice.spec.core.v3",
+        "selected": False,
+        "designation": "required",
+        "reason": "You are going to be handling M1 data. Read this so that you understand the core structure and behavior of M1 entities and aspects.",
+    },
+    {
+        "group": "M1",
+        "key": "m1-core-brief",
+        "label": "M1 Lattice core specification (BRIEF form)",
+        "document-id": "m1lattice.spec.core.v3.brief",
         "selected": False,
         "designation": "required",
         "reason": "You are going to be handling M1 data. Read this so that you understand the core structure and behavior of M1 entities and aspects.",
