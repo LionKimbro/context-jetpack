@@ -16,3 +16,4 @@ venv/
 .zookeep/
 .pytest_cache/
 zookeeper-report.json
+.pydeck26/instance.json
