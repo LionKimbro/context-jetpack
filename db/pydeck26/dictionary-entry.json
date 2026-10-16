@@ -1,0 +1,12 @@
+{
+  "id": "context-jetpack",
+  "identity": {
+    "name": "context-jetpack",
+    "title": "Context Jetpack",
+    "tags": [
+      "context",
+      "agenticprogramming"
+    ],
+    "hook": ""
+  }
+}
