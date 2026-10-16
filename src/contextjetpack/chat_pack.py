@@ -21,24 +21,28 @@ def stage_read_now_files(data, registry_entries, parent_dir=None):
     copied = []
     used_names = set()
 
-    for definition in DOCUMENTS:
-        state = data["documents"][definition["key"]]
-        if not state["selected"] or state["designation"] != "required":
-            continue
-        document_id = definition["document-id"]
-        if not document_id:
-            continue
-        resolved = resolve_document(registry_entries, document_id)
-        source = resolved["path"]
-        target = folder / unique_attachment_name(document_id, source, used_names)
-        shutil.copy2(source, target)
-        copied.append(
-            {
-                "document-id": document_id,
-                "source": source,
-                "target": target,
-            }
-        )
+    try:
+        for definition in DOCUMENTS:
+            state = data["documents"][definition["key"]]
+            if not state["selected"] or state["designation"] != "required":
+                continue
+            document_id = definition["document-id"]
+            if not document_id:
+                continue
+            resolved = resolve_document(registry_entries, document_id)
+            source = resolved["path"]
+            target = folder / unique_attachment_name(document_id, source, used_names)
+            shutil.copy2(source, target)
+            copied.append(
+                {
+                    "document-id": document_id,
+                    "source": source,
+                    "target": target,
+                }
+            )
+    except Exception:
+        shutil.rmtree(folder, ignore_errors=True)
+        raise
 
     return folder, copied
 

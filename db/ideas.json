@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "guid": "bd397dbf-944f-46ac-a982-0fde5302a1a9",
+      "title": "Locate missing references and notify Librarian2 through FileTalk",
+      "description": "Give a missing reference document a button for choosing its actual filesystem location, then send Librarian2 a FileTalk message proposing that location for the document's registry ID.",
+      "status": "conceived",
+      "date-conceived": "2026-10-16",
+      "date-entered": "2026-10-16",
+      "notes": "Deferred until Librarian2 supports the required FileTalk integration. Keep the current missing-document feedback for now. Define the message contract, acknowledgment, validation, and registry refresh behavior before implementing; Context Jetpack should not secretly rewrite the registry.",
+      "tags": ["librarian", "filetalk", "references", "locations"],
+      "pinned": false
+    },
+    {
+      "guid": "f534f821-dc66-4ef5-a73d-24b4efbd65cc",
+      "title": "Enrich the primary reference selection, review, and purposing GUI",
+      "description": "Develop a richer interface for browsing, selecting, reviewing, and explaining the purpose of reference documents as the catalog grows.",
+      "status": "conceived",
+      "date-conceived": "2026-10-16",
+      "date-entered": "2026-10-16",
+      "notes": "The current grouped form is becoming crowded. Explore search, filtering, and focused review of selected documents and their reasons. Preserve the existing grouped form during the current profile and worker-thread work; design the richer interaction separately with Lion.",
+      "tags": ["ui", "references", "browsing", "purposing"],
+      "pinned": false
+    }
+  ]
+}

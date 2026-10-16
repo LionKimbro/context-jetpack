@@ -6,6 +6,8 @@ def test_documents_are_grouped_in_display_order():
     groups = [item["group"] for item in DOCUMENTS]
     assert GROUPS == [
         "GENERAL",
+        "PROGRAMMING GUIDELINES",
+        "DEVELOPMENT",
         "WRITING",
         "APPLICATION FRAMEWORK",
         "TKINTER APPS",
@@ -38,7 +40,7 @@ def test_new_data_uses_document_specific_defaults(tmp_path):
     assert data["documents"]["programming-guidelines"]["selected"] is True
     assert data["documents"]["lionscliapp"]["selected"] is False
     assert data["documents"]["json-document-writing"]["designation"] == "recommended"
-    assert data["documents"]["softspec"]["selected"] is False
+    assert "softspec" not in data["documents"]
     assert data["documents"]["softspec-v3"]["selected"] is True
     assert data["documents"]["m1-core"]["designation"] == "required"
     assert data["documents"]["reducer-core-architecture"]["selected"] is False

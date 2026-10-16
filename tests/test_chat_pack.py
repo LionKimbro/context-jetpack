@@ -1,6 +1,8 @@
 from contextjetpack.chat_pack import cleanup_chat_folders, stage_read_now_files
 from contextjetpack.defaults import new_data
 
+import pytest
+
 
 def test_stage_read_now_files_copies_only_required_selected_documents(tmp_path):
     required = tmp_path / "required.txt"
@@ -13,15 +15,15 @@ def test_stage_read_now_files_copies_only_required_selected_documents(tmp_path):
         document["selected"] = False
     data["documents"]["programming-guidelines"]["selected"] = True
     data["documents"]["programming-guidelines"]["designation"] = "required"
-    data["documents"]["softspec"]["selected"] = True
-    data["documents"]["softspec"]["designation"] = "recommended"
+    data["documents"]["softspec-v3"]["selected"] = True
+    data["documents"]["softspec-v3"]["designation"] = "recommended"
 
     registry = {
         "lionsphilosophyofprogramming.2025.simplified": {
             "title": "Programming",
             "location": [{"path": str(required)}],
         },
-        "softspec.spec.v2": {
+        "softspec.spec.v3": {
             "title": "SoftSpec",
             "location": [{"path": str(recommended)}],
         },
@@ -51,3 +53,13 @@ def test_cleanup_chat_folders_deletes_only_chat_temp_folders(tmp_path):
     assert not chat_b.exists()
     assert other.exists()
     assert file_with_prefix.exists()
+
+
+def test_failed_staging_does_not_leave_partial_attachment_folder(tmp_path):
+    data = new_data()
+    for item in data["documents"].values():
+        item["selected"] = False
+    data["documents"]["programming-guidelines"]["selected"] = True
+    with pytest.raises(ValueError):
+        stage_read_now_files(data, {}, tmp_path)
+    assert not list(tmp_path.glob("context-jetpack-chat-*"))

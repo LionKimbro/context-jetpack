@@ -1,0 +1,17 @@
+title: Captain's Log
+version: 1
+
+
+== 2026-10-16 01:30:18 ==
+guid: 188d3c60-2bff-490b-a7e2-4e6050990b1f
+date: 2026-10-16
+time: 01:30:18
+hook: major revamp!  project-focal now
+tags: pydeck26
+major: true
+indent: 2
+
+  * Separating tk thread from program ops, which now work in a reducer core.
+  * Save/Load to from global space, vs. Save/Load to from project space.
+  * Integrated fully with projects now, incidentally.
+  * using pydeck26 now.

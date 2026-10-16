@@ -295,6 +295,8 @@ DOCUMENTS = [
 
 def new_data():
     return {
+        "title": "Default",
+        "hook": "",
         "purpose": "",
         "options": {
             "encourage-questions": False,
